@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'minishop.server'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':MiniShopModel')
+    implementation project(':MiniShopRepos')
+    implementation project(':MiniShopNetworking')
+    implementation project(':MiniShopServices')
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}

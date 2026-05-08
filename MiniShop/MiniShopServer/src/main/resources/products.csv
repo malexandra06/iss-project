@@ -1,0 +1,13 @@
+name,category,price,description,fabricationDate,noItems,photoName
+iPhone 15 Pro,Phones,5400,Apple smartphone flagship,2024-01-15,5,iphone15pro.png
+Laptop Lenovo Legion 5,Laptops,4500,Lenovo gaming laptop,2024-03-10,2,lenovo_legion5.png
+Samsung Galaxy S23,Phones,4100,Samsung flagship phone,2024-02-20,0,samsung_s23.png
+Silicon iPhone 15 Case,Accessories,100,Protective case for iPhone,2024-05-01,20,silicon_case.png
+MacBook Air M2,Laptops,6200,Apple lightweight laptop,2024-01-20,3,macbook_air.png
+Samsung Galaxy Tab S9,Tablets,3200,Samsung premium tablet,2024-04-10,7,samsung_tab_s9.png
+AirPods Pro 2,Accessories,1200,Apple wireless earbuds,2024-02-15,15,airpods_pro2.png
+Lenovo Tab P11,Tablets,1500,Lenovo mid-range tablet,2024-03-25,4,lenovo_tab_p11.png
+Samsung Galaxy Buds,Accessories,450,Samsung wireless earbuds,2024-06-01,30,samsung_buds.png
+iPhone 14,Phones,3800,Apple previous gen phone,2023-09-15,8,iphone14.png
+Laptop Lenovo ThinkPad,Laptops,5800,Lenovo business laptop,2024-02-28,1,thinkpad.png
+USB-C Hub Adapter,Accessories,150,Universal USB-C multiport,2024-04-20,50,usbc_hub.png

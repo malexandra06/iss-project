@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="minishop.client.LoginController"
+      alignment="CENTER" spacing="0" styleClass="login-root">
+
+    <VBox styleClass="login-card" alignment="CENTER_LEFT" spacing="5" maxWidth="400">
+        <padding><Insets top="40" bottom="40" left="40" right="40"/></padding>
+
+        <Label text="Login to MiniShop" styleClass="login-title"/>
+        <Label text="Access your account to order electronics." styleClass="login-subtitle"/>
+
+        <Region prefHeight="20"/>
+
+        <Label text="Email" styleClass="form-label"/>
+        <TextField fx:id="usernameField" promptText="alex@example.com" styleClass="form-input"/>
+
+        <Region prefHeight="10"/>
+
+        <Label text="Password" styleClass="form-label"/>
+        <PasswordField fx:id="passwordField" promptText="password" styleClass="form-input"/>
+
+        <Region prefHeight="5"/>
+        <Label fx:id="errorLabel" styleClass="error-label"/>
+
+        <Region prefHeight="10"/>
+
+        <Button text="Log In" styleClass="btn-login" onAction="#handleLogin" maxWidth="Infinity"/>
+
+        <Region prefHeight="5"/>
+
+        <Button text="Don't have an account? Sign Up" styleClass="btn-signup"
+                onAction="#handleSignUp" maxWidth="Infinity"/>
+    </VBox>
+</VBox>

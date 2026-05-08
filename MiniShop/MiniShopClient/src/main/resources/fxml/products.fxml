@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="minishop.client.ProductsController">
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" spacing="10" prefWidth="200">
+            <padding><Insets top="20" bottom="20" left="15" right="15"/></padding>
+
+            <Label text="Filter Options" styleClass="sidebar-title"/>
+            <Separator/>
+
+            <Label text="Categories" styleClass="filter-header"/>
+            <CheckBox fx:id="catPhones" text="Phones"/>
+            <CheckBox fx:id="catLaptops" text="Laptops"/>
+            <CheckBox fx:id="catTablets" text="Tablets"/>
+            <CheckBox fx:id="catAccessories" text="Accessories"/>
+
+            <Region prefHeight="10"/>
+
+            <Label text="Brand" styleClass="filter-header"/>
+            <CheckBox fx:id="brandSamsung" text="Samsung"/>
+            <CheckBox fx:id="brandApple" text="Apple"/>
+            <CheckBox fx:id="brandLenovo" text="Lenovo"/>
+            <CheckBox fx:id="brandOthers" text="Others"/>
+
+            <Region prefHeight="10"/>
+
+            <Label text="Price Range (RON)" styleClass="filter-header"/>
+            <Slider fx:id="priceSlider" min="0" max="10000" value="10000" showTickLabels="true"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Min:"/>
+                <TextField fx:id="minPriceField" text="0" prefWidth="60"/>
+                <Label text="Max:"/>
+                <TextField fx:id="maxPriceField" text="10000" prefWidth="60"/>
+            </HBox>
+        </VBox>
+    </left>
+
+    <!-- PRODUCTS AREA -->
+    <center>
+        <VBox spacing="15">
+            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Label fx:id="productCountLabel" text="All Products (0)" styleClass="page-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="searchField" promptText="Search products... (by name, brand, cat.)"
+                           styleClass="search-field" prefWidth="300"/>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="Sort by:"/>
+                    <ComboBox fx:id="sortCombo" prefWidth="180"/>
+                </HBox>
+            </HBox>
+
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="products-scroll">
+                <FlowPane fx:id="productsPane" hgap="20" vgap="20" prefWrapLength="900"/>
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>
