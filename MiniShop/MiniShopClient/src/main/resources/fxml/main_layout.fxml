@@ -7,7 +7,6 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="minishop.client.MainLayoutController"
             styleClass="main-root">
 
-    <!-- NAVBAR PERMANENT -->
     <top>
         <HBox styleClass="navbar" alignment="CENTER_LEFT">
             <padding><Insets top="10" bottom="10" left="20" right="20"/></padding>
@@ -18,6 +17,10 @@
 
             <HBox fx:id="navbarRight" alignment="CENTER_RIGHT" spacing="15">
                 <Label fx:id="homeLink" text="Home" styleClass="navbar-link"/>
+                <Button fx:id="cartBtn" text="🛒 Cart" styleClass="navbar-login-btn"
+                        onAction="#handleShowCart" visible="false" managed="false"/>
+                <Label fx:id="cartBadge" text="0" styleClass="cart-badge"
+                       visible="false" managed="false"/>
                 <Label fx:id="userNameLabel" text="" styleClass="navbar-user"
                        visible="false" managed="false"/>
                 <Button fx:id="loginNavBtn" text="Login" styleClass="navbar-login-btn"
@@ -28,7 +31,6 @@
         </HBox>
     </top>
 
-    <!-- CONTENT AREA - se schimba intre login si produse -->
     <center>
         <StackPane fx:id="contentArea"/>
     </center>

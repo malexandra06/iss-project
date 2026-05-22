@@ -6,6 +6,7 @@ import minishop.networking.Response;
 import minishop.networking.dto.DTOUtils;
 
 import java.util.List;
+import java.util.Map;
 
 public class JsonProtocolUtils {
 
@@ -63,5 +64,27 @@ public class JsonProtocolUtils {
         resp.setType(ResponseType.PRODUCT_UPDATED);
         resp.setProduct(DTOUtils.getDTO(product));
         return resp;
+    }
+
+    public static Request createSearchProductsRequest(String query) {
+        Request req = new Request();
+        req.setType(RequestType.SEARCH_PRODUCTS);
+        req.setSearchQuery(query);
+        return req;
+    }
+
+    public static Response createSearchProductsResponse(List<Product> products) {
+        Response resp = new Response();
+        resp.setType(ResponseType.SEARCH_PRODUCTS);
+        resp.setProducts(DTOUtils.getDTO(products));
+        return resp;
+    }
+
+    public static Request createPlaceOrderRequest(String userId, Map<String, Integer> productQuantities) {
+        Request req = new Request();
+        req.setType(RequestType.PLACE_ORDER);
+        req.setUserId(userId);
+        req.setProductQuantities(productQuantities);
+        return req;
     }
 }

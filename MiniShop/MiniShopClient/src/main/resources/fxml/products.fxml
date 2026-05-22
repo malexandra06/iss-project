@@ -6,7 +6,6 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="minishop.client.ProductsController">
 
-    <!-- SIDEBAR -->
     <left>
         <VBox styleClass="sidebar" spacing="10" prefWidth="200">
             <padding><Insets top="20" bottom="20" left="15" right="15"/></padding>
@@ -41,7 +40,6 @@
         </VBox>
     </left>
 
-    <!-- PRODUCTS AREA -->
     <center>
         <VBox spacing="15">
             <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>

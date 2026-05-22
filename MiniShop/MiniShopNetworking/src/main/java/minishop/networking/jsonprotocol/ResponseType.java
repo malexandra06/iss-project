@@ -5,5 +5,6 @@ public enum ResponseType {
     ERROR,
     LOGIN,
     GET_ALL_PRODUCTS,
+    SEARCH_PRODUCTS,
     PRODUCT_UPDATED
 }

@@ -94,6 +94,21 @@ public class MiniShopClientJsonWorker implements Runnable, IMiniShopObserver {
                     }
                     return JsonProtocolUtils.createGetAllProductsResponse(products);
                 }
+                case SEARCH_PRODUCTS -> {
+                    System.out.println("SearchProducts request ...");
+                    List<Product> products;
+                    synchronized (server) {
+                        products = server.searchProducts(request.getSearchQuery());
+                    }
+                    return JsonProtocolUtils.createSearchProductsResponse(products);
+                }
+                case PLACE_ORDER -> {
+                    System.out.println("PlaceOrder request ...");
+                    synchronized (server) {
+                        server.placeOrder(request.getUserId(), request.getProductQuantities());
+                    }
+                    return JsonProtocolUtils.createOkResponse();
+                }
                 default -> {
                     return JsonProtocolUtils.createErrorResponse("Request necunoscut");
                 }

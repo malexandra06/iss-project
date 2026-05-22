@@ -18,3 +18,21 @@ fabricationDate DATE NOT NULL,
 noItems INT NOT NULL,
 photoName VARCHAR(50) NOT NULL
 );
+
+CREATE TABLE Orders(
+    id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    userId VARCHAR(36) NOT NULL,
+    orderDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    totalAmount DOUBLE NOT NULL,
+    FOREIGN KEY (userId) REFERENCES Users(id)
+);
+
+CREATE TABLE OrderItems(
+    id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    orderId VARCHAR(36) NOT NULL,
+    productId VARCHAR(36) NOT NULL,
+    quantity INT NOT NULL,
+    unitPrice DOUBLE NOT NULL,
+    FOREIGN KEY (orderId) REFERENCES Orders(id),
+    FOREIGN KEY (productId) REFERENCES Products(id)
+);

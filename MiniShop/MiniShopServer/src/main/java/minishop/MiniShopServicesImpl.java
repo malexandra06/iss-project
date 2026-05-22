@@ -1,7 +1,10 @@
 package minishop;
 
+import minishop.model.Order;
+import minishop.model.OrderItem;
 import minishop.model.Product;
 import minishop.model.User;
+import minishop.repos.OrderRepository;
 import minishop.repos.ProductRepository;
 import minishop.repos.UserRepository;
 import minishop.services.IMiniShopObserver;
@@ -11,8 +14,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MiniShopServicesImpl implements IMiniShopServices {
@@ -20,10 +25,13 @@ public class MiniShopServicesImpl implements IMiniShopServices {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final Map<User, IMiniShopObserver> loggedInUsers;
+    private final OrderRepository orderRepository;
 
-    public MiniShopServicesImpl(UserRepository userRepository, ProductRepository productRepository) {
+    public MiniShopServicesImpl(UserRepository userRepository, ProductRepository productRepository,
+                                OrderRepository orderRepository) {
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.orderRepository = orderRepository;
         this.loggedInUsers = new ConcurrentHashMap<>();
     }
 
@@ -147,6 +155,19 @@ public class MiniShopServicesImpl implements IMiniShopServices {
     }
 
     @Override
+    public List<Product> searchProducts(String query) throws Exception {
+        if (query == null || query.trim().isEmpty()) {
+            return productRepository.findAll();
+        }
+        String q = query.toLowerCase().trim();
+        return productRepository.findAll().stream()
+                .filter(p -> p.getName().toLowerCase().contains(q)
+                        || p.getCategory().toLowerCase().contains(q)
+                        || p.getDescription().toLowerCase().contains(q))
+                .toList();
+    }
+
+    @Override
     public List<Product> getAllProducts() throws Exception {
         return productRepository.findAll();
     }
@@ -158,6 +179,56 @@ public class MiniShopServicesImpl implements IMiniShopServices {
             } catch (Exception e) {
                 System.err.println("Error notifying: " + e.getMessage());
             }
+        }
+    }
+
+    @Override
+    public synchronized void placeOrder(String userId, Map<String, Integer> productQuantities) throws Exception {
+        if (productQuantities == null || productQuantities.isEmpty()) {
+            throw new Exception("Cosul este gol!");
+        }
+
+        double totalAmount = 0;
+
+        for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+            String productId = entry.getKey();
+            int quantity = entry.getValue();
+
+            Optional<Product> optProduct = productRepository.findById(productId);
+            if (optProduct.isEmpty()) {
+                throw new Exception("Produsul nu a fost gasit: " + productId);
+            }
+
+            Product product = optProduct.get();
+            if (product.getNoItems() < quantity) {
+                throw new Exception("Stoc insuficient pentru: " + product.getName());
+            }
+
+            totalAmount += product.getPrice() * quantity;
+        }
+
+        Order order = new Order(userId, LocalDateTime.now(), totalAmount);
+
+        for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+            String productId = entry.getKey();
+            int quantity = entry.getValue();
+
+            Product product = productRepository.findById(productId).get();
+
+            OrderItem item = new OrderItem(order, productId, quantity, product.getPrice());
+            order.getItems().add(item);
+
+
+            product.setNoItems(product.getNoItems() - quantity);
+            productRepository.update(product);
+        }
+
+        orderRepository.save(order);
+
+
+        for (Map.Entry<String, Integer> entry : productQuantities.entrySet()) {
+            Product updatedProduct = productRepository.findById(entry.getKey()).get();
+            notifyAll(obs -> obs.productUpdated(updatedProduct));
         }
     }
 

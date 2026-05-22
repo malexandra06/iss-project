@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import minishop.model.CartItem;
 import minishop.model.Product;
 import minishop.model.User;
 import minishop.networking.jsonprotocol.MiniShopServerJsonProxy;
@@ -22,6 +23,8 @@ public class MainLayoutController implements IMiniShopObserver {
     @FXML private Label userNameLabel;
     @FXML private Label homeLink;
     @FXML private StackPane contentArea;
+    @FXML private Button cartBtn;
+    @FXML private Label cartBadge;
 
     private Stage stage;
     private String serverHost;
@@ -65,12 +68,16 @@ public class MainLayoutController implements IMiniShopObserver {
                 userNameLabel.setManaged(true);
                 userNameLabel.setText(loggedInUser.getName());
             }
+            if (cartBtn != null) { cartBtn.setVisible(true); cartBtn.setManaged(true); }
         } else {
             if (loginNavBtn != null) { loginNavBtn.setVisible(true); loginNavBtn.setManaged(true); }
             if (logoutNavBtn != null) { logoutNavBtn.setVisible(false); logoutNavBtn.setManaged(false); }
             if (userNameLabel != null) { userNameLabel.setVisible(false); userNameLabel.setManaged(false); }
+            if (cartBtn != null) { cartBtn.setVisible(false); cartBtn.setManaged(false); }
+            if (cartBadge != null) { cartBadge.setVisible(false); cartBadge.setManaged(false); }
         }
     }
+
 
     public void showProducts() {
         try {
@@ -83,6 +90,8 @@ public class MainLayoutController implements IMiniShopObserver {
                 services = createProxy();
             }
             productsController.setServices(services);
+
+            productsController.setOnCartChanged(this::updateCartBadge);
 
             contentArea.getChildren().clear();
             contentArea.getChildren().add(productsView);
@@ -99,6 +108,7 @@ public class MainLayoutController implements IMiniShopObserver {
         }
     }
 
+
     @FXML
     private void handleShowLogin() {
         try {
@@ -111,6 +121,30 @@ public class MainLayoutController implements IMiniShopObserver {
             contentArea.getChildren().add(loginView);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void handleShowCart() {
+        if (productsController != null) {
+            productsController.showCartDialog();
+        }
+    }
+
+
+    private void updateCartBadge() {
+        if (productsController != null && cartBadge != null) {
+            int count = productsController.getCart().stream()
+                    .mapToInt(CartItem::getQuantity).sum();
+            if (count > 0) {
+                cartBadge.setText(String.valueOf(count));
+                cartBadge.setVisible(true);
+                cartBadge.setManaged(true);
+            } else {
+                cartBadge.setVisible(false);
+                cartBadge.setManaged(false);
+            }
         }
     }
 
@@ -139,6 +173,7 @@ public class MainLayoutController implements IMiniShopObserver {
         updateNavbar();
         showProducts();
     }
+
 
     @Override
     public void productUpdated(Product product) {

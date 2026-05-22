@@ -11,6 +11,7 @@ import minishop.services.IMiniShopServices;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -143,5 +144,29 @@ public class MiniShopServerJsonProxy implements IMiniShopServices {
             throw new Exception(response.getErrorMessage());
         }
         return DTOUtils.getFromDTOList(response.getProducts());
+    }
+
+    @Override
+    public List<Product> searchProducts(String query) throws Exception {
+        if (connection == null || connection.isClosed()) {
+            initializeConnection();
+        }
+        sendRequest(JsonProtocolUtils.createSearchProductsRequest(query));
+        Response response = readResponse();
+        if (response.getType() == ResponseType.ERROR) {
+            throw new Exception(response.getErrorMessage());
+        }
+        return DTOUtils.getFromDTOList(response.getProducts());
+    }
+    @Override
+    public void placeOrder(String userId, Map<String, Integer> productQuantities) throws Exception {
+        if (connection == null || connection.isClosed()) {
+            initializeConnection();
+        }
+        sendRequest(JsonProtocolUtils.createPlaceOrderRequest(userId, productQuantities));
+        Response response = readResponse();
+        if (response.getType() == ResponseType.ERROR) {
+            throw new Exception(response.getErrorMessage());
+        }
     }
 }

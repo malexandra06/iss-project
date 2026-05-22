@@ -4,6 +4,8 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>minishop.model.User</class>
         <class>minishop.model.Product</class>
+        <class>minishop.model.Order</class>
+        <class>minishop.model.OrderItem</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>

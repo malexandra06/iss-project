@@ -1,6 +1,7 @@
 package minishop;
 
 import minishop.networking.MiniShopConcurrentServer;
+import minishop.repos.OrderRepository;
 import minishop.repos.ProductRepository;
 import minishop.repos.UserRepository;
 import minishop.services.IMiniShopServices;
@@ -30,9 +31,10 @@ public class StartServer {
         // repositories
         UserRepository userRepository = new UserRepository();
         ProductRepository productRepository = new ProductRepository();
+        OrderRepository orderRepository = new OrderRepository();
 
         // services
-        MiniShopServicesImpl services = new MiniShopServicesImpl(userRepository, productRepository);
+        MiniShopServicesImpl services = new MiniShopServicesImpl(userRepository, productRepository,orderRepository);
 
         // seed database daca e goala
         services.seedIfEmpty();
